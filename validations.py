@@ -5,7 +5,7 @@ def validate_data(data_dict):
     validated_data = {}
 
     for key, value in data_dict.items():
-        value = value.strip()  
+        value = value.strip()
 
         if key in ["fname", "lname"]:
             pattern = r"^[A-Z][a-z]{2,}$"  # Name should start with a capital letter and have at least 2 lowercase letters
@@ -13,7 +13,7 @@ def validate_data(data_dict):
                 errors.append(f"{key.replace('_', ' ').title()} must start with a capital letter and have at least 2 lowercase letters.")
 
         elif key == "phonenum":
-            pattern = r"^\d{10}$"  # Phone num must be exactly 10 digits
+            pattern = r"^\d{10}$"  # Phone number must be exactly 10 digits
             if not re.fullmatch(pattern, value):
                 errors.append("Phone number must be exactly 10 digits.")
 

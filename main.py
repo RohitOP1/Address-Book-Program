@@ -1,6 +1,6 @@
+from addressbook import AddressBook
 from contacts import Contacts
 from validations import validate_data
-from addressbook import AddressBook
 
 def main():
     address_book = AddressBook()
@@ -10,7 +10,8 @@ def main():
         print("1. Add Contact")
         print("2. Display Contacts")
         print("3. Edit Contact")
-        print("4. Exit")
+        print("4. Delete Contact")
+        print("5. Exit")
 
         choice = input("Enter your choice: ").strip()
 
@@ -44,6 +45,11 @@ def main():
             address_book.edit_contact(first_name, last_name)
 
         elif choice == "4":
+            first_name = input("\nEnter First Name of the Contact to Delete: ").strip()
+            last_name = input("Enter Last Name of the Contact to Delete: ").strip()
+            address_book.delete_contact(first_name, last_name)
+
+        elif choice == "5":
             print("\nExiting Address Book...")
             break
 
