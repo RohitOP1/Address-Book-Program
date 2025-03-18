@@ -1,30 +1,51 @@
 from contacts import Contacts
 from validations import validate_data
+from addressbook import AddressBook
 
 def main():
-    try:
-        # User input
-        user_data = {
-            "fname": input("Enter First Name: ").strip(),
-            "lname": input("Enter Last Name: ").strip(),
-            "address": input("Enter Address: ").strip(),
-            "city": input("Enter City: ").strip(),
-            "state": input("Enter State: ").strip(),
-            "zip_code": input("Enter ZIP Code: ").strip(),
-            "phonenum": input("Enter Phone Number: ").strip(),
-            "email": input("Enter Email: ").strip()
-        }
+    address_book = AddressBook()
 
-        # Validate user input
-        validated_data = validate_data(user_data)
+    while True:
+        print("\n--- Address Book Menu ---")
+        print("1. Add Contact")
+        print("2. Display Contacts")
+        print("3. Exit")
 
-        # Create a contact object
-        contact = Contacts(**validated_data)  # Unpack dictionary as arguments
-        print("\n Contact Added Successfully!\n")
-        print(contact)
+        choice = input("Enter your choice: ").strip()
 
-    except ValueError as e:
-        print(f"\n Validation Error:\n{e}")
+        if choice == "1":
+            try:
+                user_data = {
+                    "fname": input("Enter First Name: ").strip(),
+                    "lname": input("Enter Last Name: ").strip(),
+                    "address": input("Enter Address: ").strip(),
+                    "city": input("Enter City: ").strip(),
+                    "state": input("Enter State: ").strip(),
+                    "zip_code": input("Enter ZIP Code: ").strip(),
+                    "phonenum": input("Enter Phone Number: ").strip(),
+                    "email": input("Enter Email: ").strip()
+                }
+
+                # Validate user input
+                validated_data = validate_data(user_data)
+
+                # Create a contact object and add it to the address book
+                contact = Contacts(**validated_data)
+                address_book.add_contact(contact)
+
+            except ValueError as e:
+                print(f"\nValidation Error:\n{e}")
+
+        elif choice == "2":
+            print("\n--- Address Book ---")
+            address_book.print_address()
+
+        elif choice == "3":
+            print("\nExiting Address Book...")
+            break
+
+        else:
+            print("\nInvalid choice! Please try again.")
 
 if __name__ == "__main__":
     main()
