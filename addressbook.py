@@ -3,7 +3,7 @@ from validations import validate_data
 
 class AddressBook:
     def __init__(self):
-        self.contacts = {}  # Dictionary to store contacts by phone number
+        self.contacts = {}  
 
     def add_contact(self, contact_obj):
         if contact_obj.phonenum in self.contacts:
@@ -20,7 +20,7 @@ class AddressBook:
                 print(contact)
 
     def edit_contact(self, first_name, last_name):
-        for key, contact in self.contacts.items():
+        for key, contact in list(self.contacts.items()):
             if contact.fname.lower() == first_name.lower() and contact.lname.lower() == last_name.lower():
                 print(f"\nEditing Contact: {contact}")
 
@@ -37,19 +37,18 @@ class AddressBook:
 
                 try:
                     validated_data = validate_data(new_data)  # Validate new inputs
-                    self.contacts[key] = Contacts(**validated_data)  # Update contact details
+                    
+                    # If phone number changes, update the dictionary key
+                    if validated_data["phonenum"] != contact.phonenum:
+                        del self.contacts[key]  # Remove old entry
+                        self.contacts[validated_data["phonenum"]] = Contacts(**validated_data)  # Add new entry
+                    else:
+                        self.contacts[key] = Contacts(**validated_data) 
+
                     print("\nContact Updated Successfully!")
+
                 except ValueError as e:
                     print(f"\nValidation Error:\n{e}")
                 return  
 
         print("\nContact not found!")
-
-    def delete_contact(self, first_name, last_name):
-        for key, contact in list(self.contacts.items()):
-            if contact.fname.lower() == first_name.lower() and contact.lname.lower() == last_name.lower():
-                del self.contacts[key]
-                print(f"\nContact '{first_name} {last_name}' deleted successfully!")
-                return
-        
-        print(f"\nContact '{first_name} {last_name}' not found!")

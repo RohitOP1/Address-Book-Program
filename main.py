@@ -9,9 +9,8 @@ def main():
         print("\n--- Address Book Menu ---")
         print("1. Add Contact")
         print("2. Display Contacts")
-        print("3. Edit Contact")
-        print("4. Delete Contact")
-        print("5. Exit")
+        print("3. Edit Contact")  
+        print("4. Exit")
 
         choice = input("Enter your choice: ").strip()
 
@@ -45,11 +44,6 @@ def main():
             address_book.edit_contact(first_name, last_name)
 
         elif choice == "4":
-            first_name = input("\nEnter First Name of the Contact to Delete: ").strip()
-            last_name = input("Enter Last Name of the Contact to Delete: ").strip()
-            address_book.delete_contact(first_name, last_name)
-
-        elif choice == "5":
             print("\nExiting Address Book...")
             break
 
