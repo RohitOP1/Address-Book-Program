@@ -2,7 +2,8 @@ from contacts import Contacts
 from validations import validate_data
 
 class AddressBook:
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name  # Unique name for each address book
         self.contacts = {}  
 
     def add_contact(self, contact_obj):
@@ -11,11 +12,16 @@ class AddressBook:
         else:
             self.contacts[contact_obj.phonenum] = contact_obj
             print("\nContact Added Successfully!")
+            for existing_contact  in self.contacts.values():
+             if existing_contact  ==  contact.full_name:
+                 print(f"\n{contact.full_name} is already in '{self.name}' Address Book.")
+                 break
 
     def print_address(self):
         if not self.contacts:
             print("\nAddress Book is empty!")
         else:
+            print(f"\n--- Address Book: {self.name} ---")
             for contact in self.contacts.values():
                 print(contact)
 
@@ -36,9 +42,9 @@ class AddressBook:
                 }
 
                 try:
-                    validated_data = validate_data(new_data)  # Validate new inputs
+                    validated_data = validate_data(new_data) 
                     
-                    # If phone number changes, update the dictionary key
+                    # If phone number changes
                     if validated_data["phonenum"] != contact.phonenum:
                         del self.contacts[key]  # Remove old entry
                         self.contacts[validated_data["phonenum"]] = Contacts(**validated_data)  # Add new entry
