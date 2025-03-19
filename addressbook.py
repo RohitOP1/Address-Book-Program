@@ -3,19 +3,25 @@ from validations import validate_data
 
 class AddressBook:
     def __init__(self, name):
-        self.name = name  # Unique name for each address book
+        self.name = name  
         self.contacts = {}  
 
     def add_contact(self, contact_obj):
+        # Check if contact with the same phone number exists
         if contact_obj.phonenum in self.contacts:
             print("\nContact with this phone number already exists!")
-        else:
-            self.contacts[contact_obj.phonenum] = contact_obj
-            print("\nContact Added Successfully!")
-            for existing_contact  in self.contacts.values():
-             if existing_contact  ==  contact.full_name:
-                 print(f"\n{contact.full_name} is already in '{self.name}' Address Book.")
-                 break
+            return
+        
+        # Check if contact with the same name exists
+        for existing_contact in self.contacts.values():
+            if (existing_contact.fname.lower() == contact_obj.fname.lower() and
+                existing_contact.lname.lower() == contact_obj.lname.lower()):
+                print(f"\n{contact_obj.fname} {contact_obj.lname} is already in '{self.name}' Address Book.")
+                return
+
+        # Add contact if it doesn't exist
+        self.contacts[contact_obj.phonenum] = contact_obj
+        print("\nContact Added Successfully!")
 
     def print_address(self):
         if not self.contacts:
@@ -43,10 +49,10 @@ class AddressBook:
 
                 try:
                     validated_data = validate_data(new_data) 
+
                     
-                    # If phone number changes
                     if validated_data["phonenum"] != contact.phonenum:
-                        del self.contacts[key]  # Remove old entry
+                        del self.contacts[key]  #old
                         self.contacts[validated_data["phonenum"]] = Contacts(**validated_data)  # Add new entry
                     else:
                         self.contacts[key] = Contacts(**validated_data) 
