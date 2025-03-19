@@ -1,37 +1,10 @@
-from addressbook import AddressBook
+from addressbookmain import SearchAddressBook
 from contacts import Contacts
 from validations import validate_data
 
-class AddressBookSystem:
-    def __init__(self):
-        self.address_books = {}  # Stores multiple address books
-        self.current_book = None
-
-    def create_address_book(self, name):
-        if name in self.address_books:
-            print("\nAn Address Book with this name already exists!")
-        else:
-            self.address_books[name] = AddressBook(name)
-            self.current_book = self.address_books[name]  # Set as active
-            print(f"\nAddress Book '{name}' created and selected.")
-
-    def switch_address_book(self, name):
-        if name in self.address_books:
-            self.current_book = self.address_books[name]
-            print(f"\nSwitched to Address Book '{name}'.")
-        else:
-            print("\nAddress Book not found!")
-
-    def list_address_books(self):
-        if not self.address_books:
-            print("\nNo Address Books available.")
-        else:
-            print("\nAvailable Address Books:")
-            for name in self.address_books.keys():
-                print(f"- {name}")
-
 def main():
-    system = AddressBookSystem()
+    system = SearchAddressBook()  
+    system.current_book = None  
 
     while True:
         print("\n--- Address Book System Menu ---")
@@ -41,24 +14,28 @@ def main():
         print("4. Add Contact")
         print("5. Display Contacts")
         print("6. Edit Contact")
-        print("7. Exit")
+        print("7. Search Contact by City/State")
+        print("8. Exit")
 
         choice = input("Enter your choice: ").strip()
 
         if choice == "1":
             book_name = input("Enter a unique name for the Address Book: ").strip()
-            system.create_address_book(book_name)
+            system.add_address_book(book_name)
 
         elif choice == "2":
             book_name = input("Enter the name of the Address Book to switch: ").strip()
-            system.switch_address_book(book_name)
+            selected_book = system.select_address_book(book_name)
+            if selected_book:
+                system.current_book = selected_book
+                print(f"\nSwitched to Address Book: {book_name}")
 
         elif choice == "3":
-            system.list_address_books()
+            system.display_address_books()
 
         elif choice in ["4", "5", "6"]:
-            if system.current_book is None:
-                print("\nNo Address Book selected! Create or switch first.")
+            if not system.current_book:
+                print("\n No Address Book selected! Please create or switch first.")
                 continue
 
             if choice == "4":
@@ -73,13 +50,11 @@ def main():
                         "phonenum": input("Enter Phone Number: ").strip(),
                         "email": input("Enter Email: ").strip()
                     }
-
                     validated_data = validate_data(user_data)
                     contact = Contacts(**validated_data)
                     system.current_book.add_contact(contact)
-
                 except ValueError as e:
-                    print(f"\nValidation Error:\n{e}")
+                    print(f"\n Validation Error:\n{e}")
 
             elif choice == "5":
                 system.current_book.print_address()
@@ -90,11 +65,15 @@ def main():
                 system.current_book.edit_contact(first_name, last_name)
 
         elif choice == "7":
-            print("\nExiting Address Book System...")
+            location = input("\nEnter City or State to search: ").strip()
+            system.search_person_by_location(location)
+
+        elif choice == "8":
+            print("\n Exiting Address Book System...")
             break
 
         else:
-            print("\nInvalid choice! Please try again.")
+            print("\n Invalid choice! Please try again.")
 
 if __name__ == "__main__":
     main()
