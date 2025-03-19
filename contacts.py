@@ -10,4 +10,5 @@ class Contacts:
         self.email = email
 
     def __str__(self):
+        #return
         return f"{self.fname} {self.lname}, {self.address}, {self.city}, {self.state}, {self.zip_code}, {self.phonenum}, {self.email}"

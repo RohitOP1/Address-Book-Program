@@ -25,9 +25,9 @@ def validate_data(data_dict):
         elif key == "zip_code":
             pattern = r"^\d{5,6}$"  # ZIP Code should be 5 or 6 digits
             if not re.fullmatch(pattern, value):
-                errors.append("ZIP Code must be 5 or 6 digits.")
+                errors.append("ZIP Code must be of 5 or 6 digits.")
 
-        validated_data[key] = value  # Store the valid data
+        validated_data[key] = value  # Store the valid datas
 
     if errors:
         raise ValueError("\n".join(errors))  
