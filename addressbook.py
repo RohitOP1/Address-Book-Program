@@ -29,8 +29,9 @@ class AddressBook:
         if not self.contacts:
             print("\nAddress Book is empty!")
         else:
-            print(f"\n--- Address Book: {self.name} ---")
-            for contact in self.contacts.values():
+            sorted_contacts = sorted(self.contacts.values(), key=lambda c: (c.fname.lower(), c.lname.lower())) #sort Alphabetically
+            print(f"\n--- Address Book: {self.name} (Sorted Alphabetically) ---")
+            for contact in sorted_contacts:
                 print(contact)
 
     def edit_contact(self, first_name, last_name):
@@ -68,29 +69,3 @@ class AddressBook:
                 return
 
         print("\nContact not found!")
-
-    def view_by_city(self, city):
-        if city in self.city_person_map and self.city_person_map[city]:
-            print(f"\nContacts in City '{city}':")
-            for contact in self.city_person_map[city]:
-                print(contact)
-        else:
-            print(f"\nNo contacts found in City '{city}'.")
-
-    def view_by_state(self, state):
-        if state in self.state_person_map and self.state_person_map[state]:
-            print(f"\nContacts in State '{state}':")
-            for contact in self.state_person_map[state]:
-                print(contact)
-        else:
-            print(f"\nNo contacts found in State '{state}'.")
-
-    def count_by_city(self, city):
-        count = len(self.city_person_map[city])
-        print(f"\nNumber of contacts in City '{city}': {count}")
-        return count
-
-    def count_by_state(self, state):
-        count = len(self.state_person_map[state])
-        print(f"\nNumber of contacts in State '{state}': {count}")
-        return count
