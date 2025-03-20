@@ -26,46 +26,52 @@ class AddressBook:
         print("\nContact Added Successfully!")
 
     def print_address(self):
+        """Display all contacts."""
         if not self.contacts:
             print("\nAddress Book is empty!")
         else:
-            sorted_contacts = sorted(self.contacts.values(), key=lambda c: (c.fname.lower(), c.lname.lower())) #sort Alphabetically
-            print(f"\n--- Address Book: {self.name} (Sorted Alphabetically) ---")
-            for contact in sorted_contacts:
+            print(f"\n--- Address Book: {self.name} ---")
+            for contact in self.contacts.values():
                 print(contact)
 
-    def edit_contact(self, first_name, last_name):
-        for key, contact in list(self.contacts.items()):
-            if contact.fname.lower() == first_name.lower() and contact.lname.lower() == last_name.lower():
-                print(f"\nEditing Contact: {contact}")
+    #  Function to sort by City
+    def sort_by_city(self):
+        if not self.contacts:
+            print("\nNo contacts to sort!")
+            return
+        sorted_contacts = sorted(self.contacts.values(), key=lambda c: c.city.lower())
+        print(f"\n--- Contacts in '{self.name}' Sorted by City ---")
+        for contact in sorted_contacts:
+            print(contact)
 
-                if contact in self.city_person_map[contact.city]:
-                    self.city_person_map[contact.city].remove(contact)
-                if contact in self.state_person_map[contact.state]:
-                    self.state_person_map[contact.state].remove(contact)
+    #  Function to sort by State
+    def sort_by_state(self):
+        if not self.contacts:
+            print("\nNo contacts to sort!")
+            return
+        sorted_contacts = sorted(self.contacts.values(), key=lambda c: c.state.lower())
+        print(f"\n--- Contacts in '{self.name}' Sorted by State ---")
+        for contact in sorted_contacts:
+            print(contact)
 
-                new_data = {
-                    "fname": input("Enter new First Name: ").strip() or contact.fname,
-                    "lname": input("Enter new Last Name: ").strip() or contact.lname,
-                    "address": input("Enter new Address: ").strip() or contact.address,
-                    "city": input("Enter new City: ").strip() or contact.city,
-                    "state": input("Enter new State: ").strip() or contact.state,
-                    "zip_code": input("Enter new ZIP Code: ").strip() or contact.zip_code,
-                    "phonenum": input("Enter new Phone Number: ").strip() or contact.phonenum,
-                    "email": input("Enter new Email: ").strip() or contact.email
-                }
+    # Function to sort by ZIP Code
+    def sort_by_zip(self):
+        if not self.contacts:
+            print("\nNo contacts to sort!")
+            return
+        sorted_contacts = sorted(self.contacts.values(), key=lambda c: c.zip_code)
+        print(f"\n--- Contacts in '{self.name}' Sorted by ZIP Code ---")
+        for contact in sorted_contacts:
+            print(contact)
 
-                try:
-                    validated_data = validate_data(new_data)
-                    del self.contacts[key]
-                    updated_contact = Contacts(**validated_data)
-                    self.contacts[validated_data["phonenum"]] = updated_contact
+    #   Count contacts by City
+    def count_by_city(self, city):
+        count = len(self.city_person_map[city])
+        print(f"\nNumber of contacts in City '{city}': {count}")
+        return count
 
-                    self.city_person_map[updated_contact.city].append(updated_contact)
-                    self.state_person_map[updated_contact.state].append(updated_contact)
-                    print("\nContact Updated Successfully!")
-                except ValueError as e:
-                    print(f"\nValidation Error:\n{e}")
-                return
-
-        print("\nContact not found!")
+    #  Count contacts by State
+    def count_by_state(self, state):
+        count = len(self.state_person_map[state])
+        print(f"\nNumber of contacts in State '{state}': {count}")
+        return count
