@@ -1,10 +1,10 @@
-from addressbookmain import SearchAddressBook
+from addressbookmain import AddressBookMain
 from contacts import Contacts
 from validations import validate_data
 
 def main():
-    system = SearchAddressBook()  
-    system.current_book = None  
+    system = AddressBookMain()
+    system.current_book = None
 
     while True:
         print("\n--- Address Book System Menu ---")
@@ -14,8 +14,9 @@ def main():
         print("4. Add Contact")
         print("5. Display Contacts")
         print("6. Edit Contact")
-        print("7. Search Contact by City/State")
-        print("8. Exit")
+        print("7. View Persons by City")
+        print("8. View Persons by State")
+        print("9. Exit")
 
         choice = input("Enter your choice: ").strip()
 
@@ -33,9 +34,9 @@ def main():
         elif choice == "3":
             system.display_address_books()
 
-        elif choice in ["4", "5", "6"]:
+        elif choice in ["4", "5", "6", "7", "8"]:
             if not system.current_book:
-                print("\n No Address Book selected! Please create or switch first.")
+                print("\nNo Address Book selected! Please create or switch first.")
                 continue
 
             if choice == "4":
@@ -54,26 +55,30 @@ def main():
                     contact = Contacts(**validated_data)
                     system.current_book.add_contact(contact)
                 except ValueError as e:
-                    print(f"\n Validation Error:\n{e}")
+                    print(f"\nValidation Error:\n{e}")
 
             elif choice == "5":
                 system.current_book.print_address()
 
             elif choice == "6":
-                first_name = input("\nEnter First Name of the Contact to Edit: ").strip()
-                last_name = input("Enter Last Name of the Contact to Edit: ").strip()
-                system.current_book.edit_contact(first_name, last_name)
+                fname = input("Enter First Name of the Contact to Edit: ").strip()
+                lname = input("Enter Last Name of the Contact to Edit: ").strip()
+                system.current_book.edit_contact(fname, lname)
 
-        elif choice == "7":
-            location = input("\nEnter City or State to search: ").strip()
-            system.search_person_by_location(location)
+            elif choice == "7":
+                city = input("Enter City: ").strip()
+                system.current_book.view_by_city(city)
 
-        elif choice == "8":
-            print("\n Exiting Address Book System...")
+            elif choice == "8":
+                state = input("Enter State: ").strip()
+                system.current_book.view_by_state(state)
+
+        elif choice == "9":
+            print("\nExiting Address Book System...")
             break
 
         else:
-            print("\n Invalid choice! Please try again.")
+            print("\nInvalid choice! Please try again.")
 
 if __name__ == "__main__":
     main()
