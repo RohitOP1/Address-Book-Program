@@ -14,7 +14,9 @@ def main():
         print("4. Add Contact")
         print("5. Display Contacts (Sort & Count Options)")
         print("6. Edit Contact")
-        print("7. Exit")
+        print("7. Save Contacts to CSV")   
+        print("8. Load Contacts from CSV")  
+        print("9. Exit")
 
         choice = input("Enter your choice: ").strip()
 
@@ -93,7 +95,21 @@ def main():
             lname = input("Enter Last Name of the Contact to Edit: ").strip()
             system.current_book.edit_contact(fname, lname)
 
-        elif choice == "7":
+        elif choice == "7":  #  Save to CSV
+            if not system.current_book:
+                print("\nNo Address Book selected! Please create or switch first.")
+                continue
+            filename = input("Enter the filename to save contacts (e.g., contacts.csv): ").strip()
+            system.current_book.save_to_csv()
+
+        elif choice == "8":  #  Load from CSV
+            if not system.current_book:
+                print("\nNo Address Book selected! Please create or switch first.")
+                continue
+            filename = input("Enter the filename to load contacts from (e.g., contacts.csv): ").strip()
+            system.current_book.load_from_csv()
+
+        elif choice == "9":
             print("\nExiting Address Book System...")
             break
 
